@@ -1,0 +1,43 @@
+	6a uniq  	
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+int main(int argc,char *argv[])
+{
+        char buf[130];
+        FILE *fp=fopen(argv[1],"r");
+        if(fp==NULL)
+        {perror("Unable to open file");
+        exit(1);}
+        char data[130];
+        while(fgets(data,sizeof(data),fp)!=NULL)
+        {
+                if(strcmp(buf,data)==0)
+                        continue;
+                else
+                {
+
+                        fputs(data,stdout);
+                        strcpy(buf,data);
+                }
+        }
+        fclose(fp);
+        return 0;
+}
+-------------------------------6b grep
+#include<stdio.h>
+#include<string.h>
+int main(int argc,  char *argv[])
+{
+	char fn[10],pat[10],temp[200];
+	FILE *fp;
+	fp=fopen(argv[1],"r");
+	while(!feof(fp))
+	{
+		fgets(temp,1000,fp);
+		if(strstr(temp,argv[2]))
+			printf("%s",temp);
+	}
+	fclose(fp);
+	return 0;
+}

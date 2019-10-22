@@ -1,0 +1,88 @@
+#include<stdio.h>
+#include<fcntl.h>
+#include<sys/stat.h>
+#include<time.h>
+int main(int argc,char *argv[])
+{
+char *at; 
+struct stat buf;
+int i; 
+for(i=1;i<argc;i++)
+{
+stat(argv[i],&buf);
+printf("------------------%s-----------------\n",argv[i]);
+if(S_ISDIR(buf.st_mode))
+{
+printf("File Type : Directory\n"); 
+}
+else if(S_ISREG(buf.st_mode))
+{
+printf("File Type : Regular file\n");
+}
+printf("No of links : %d\n",buf.st_nlink); 
+at=ctime(&buf.st_atime);
+printf("Time of last access : %s",at);
+printf("Permissions : \n");
+if((buf.st_mode&S_IRUSR)==S_IRUSR)
+{
+printf("User has read permission\n"); 
+}
+if((buf.st_mode &S_IWUSR)==S_IWUSR)
+{
+ printf("User has write permisssion\n");
+}
+if((buf.st_mode &S_IXUSR)==S_IXUSR) 
+{
+printf("User has execute permission\n");
+}
+if((buf.st_mode & S_IRGRP)==S_IRGRP) 
+{
+printf("Group has read permission\n");
+}
+if((buf.st_mode &S_IWGRP)==S_IWGRP) 
+{
+printf("Group has write permission\n"); 
+}
+if((buf.st_mode & S_IXGRP)==S_IXGRP)
+{
+ printf("Group has execute permission\n");
+}
+if((buf.st_mode &S_IROTH)==S_IROTH)
+{
+printf("Others has read permission\n");
+}
+if((buf.st_mode &S_IWOTH)==S_IWOTH) 
+{
+printf("Others has write permission\n");
+}
+if((buf.st_mode &S_IXOTH)==S_IXOTH) 
+{
+printf("Others has execute permisssion\n");
+}
+}
+return 0;
+}
+/*OUTPUT:
+[17121a05m2@cse-rhel ~]$ ./a.out a sample
+------------------a-----------------
+File Type : Regular file
+No of links : 1
+Time of last access : Sat Aug 17 10:10:26 2019
+Permissions :
+User has read permission
+User has write permisssion
+Group has read permission
+Others has read permission
+------------------sample-----------------
+File Type : Directory
+No of links : 2
+Time of last access : Sat Aug 17 10:44:56 2019
+Permissions :
+User has read permission
+User has write permisssion
+User has execute permission
+Group has read permission
+Group has execute permission
+Others has read permission
+Others has execute permisssion
+*/
